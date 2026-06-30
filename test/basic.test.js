@@ -1,17 +1,25 @@
 import { describe, it, expect } from 'vitest';
- 
-describe('Basic Application Tests', () => {
-  it('should verify the CI pipeline test gate is active', () => {
-    const pipelineActive = true;
-    expect(pipelineActive).toBe(true);
+import fs from 'node:fs';
+import path from 'node:path';
+
+describe('Project Sanity Checks', () => {
+  it('should have a valid package.json with required scripts', () => {
+    const pkg = JSON.parse(
+      fs.readFileSync(path.resolve('package.json'), 'utf-8')
+    );
+
+    expect(pkg.scripts).toHaveProperty('build');
+    expect(pkg.scripts).toHaveProperty('test');
+    expect(pkg.scripts).toHaveProperty('server');
   });
- 
-  it('should validate user array logic', () => {
-    const activeUsers = ['Patient A', 'Doctor B'];
-    // The system expects exactly 2 users. 
-    expect(activeUsers.length).toBe(2);
-    // The system expects 'Doctor B' to be present.
-    expect(activeUsers).toContain('Doctor B');
+
+  it('should have a Dockerfile in the project root', () => {
+    const exists = fs.existsSync(path.resolve('Dockerfile'));
+    expect(exists).toBe(true);
   });
- 
+
+  it('should have a Vite entry point referenced in index.html', () => {
+    const html = fs.readFileSync(path.resolve('index.html'), 'utf-8');
+    expect(html).toContain('/src/main.tsx');
+  });
 });
