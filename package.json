@@ -4,13 +4,15 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "server": "node server/index.js",
-    "dev:full": "concurrently \"npm run dev\" \"npm run server\""
-  },
+   "dev": "vite",
+   "build": "tsc && vite build",
+   "lint": "eslint .",
+   "preview": "vite preview",
+   "server": "node server/index.js",
+   "test": "vitest run",
+   "docker:up": "docker compose up --build -d",
+   "docker:down": "docker compose down"
+ },
   "dependencies": {
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",

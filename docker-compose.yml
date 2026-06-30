@@ -1,0 +1,51 @@
+version: '3.8'
+
+ 
+
+services:
+
+ # 1. Our Custom Node.js Monolith
+
+ web:
+
+   build: .                 # Tells Compose to look for our Dockerfile and build it
+
+   ports:
+
+     - "8080:5000"          # Map laptop port 8080 to container port 5000
+
+   environment:
+
+     # Explicitly pass the connection string just to be safe
+
+     - MONGODB_URI=mongodb://database:27017/doctor-patient-portal
+
+   depends_on:
+
+     - database             # The Conductor ensures the DB is running before starting the web app!
+
+ 
+
+ # 2. The Official MongoDB Database
+
+ database:
+
+   image: mongo:latest      # Download the official, ready-made MongoDB image
+
+   ports:
+
+     - "27017:27017"        # Expose the database so we can use Compass
+
+   volumes:
+
+     - mongo_data:/data/db  # Save our data permanently!
+
+ 
+
+# 3. Persistent Storage
+
+volumes:
+
+ mongo_data:                # This creates a safe hard drive outside the container
+
+
